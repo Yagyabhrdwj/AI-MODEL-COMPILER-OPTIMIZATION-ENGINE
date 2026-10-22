@@ -1,0 +1,13 @@
+{
+  "graph_name": "mlp_demo_optimized",
+  "runs": 50,
+  "warmup": 10,
+  "batch_size": 8,
+  "mean_ms": 0.014043999835848808,
+  "median_ms": 0.013900000340072438,
+  "p95_ms": 0.014999997802078724,
+  "throughput_samples_per_second": 569638.2863505272,
+  "python_version": "3.14.6",
+  "torch_version": "2.14.0+cpu",
+  "device": "cpu"
+}

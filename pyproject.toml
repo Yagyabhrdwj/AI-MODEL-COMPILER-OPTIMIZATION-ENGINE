@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-model-compiler"
+version = "0.1.0"
+description = "A custom IR and optimization prototype for neural-network inference"
+requires-python = ">=3.10"
+dependencies = ["torch>=2.1"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

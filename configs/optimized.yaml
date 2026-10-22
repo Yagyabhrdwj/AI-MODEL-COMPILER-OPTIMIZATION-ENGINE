@@ -1,0 +1,12 @@
+model: mlp_demo
+batch_size: 8
+input_shape: [8, 16]
+precision: fp32
+optimizations:
+  - constant_folding
+  - dead_node_elimination
+  - redundant_operation_elimination
+  - conv_batchnorm_relu_fusion
+warmup: 10
+runs: 50
+seed: 0

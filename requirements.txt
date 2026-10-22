@@ -1,0 +1,4 @@
+torch>=2.1
+pytest>=8.0
+reportlab>=4.0
+numpy>=1.26

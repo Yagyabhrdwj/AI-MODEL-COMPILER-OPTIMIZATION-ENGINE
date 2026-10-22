@@ -1,0 +1,3 @@
+graph_name,runs,warmup,batch_size,mean_ms,median_ms,p95_ms,throughput_samples_per_second,python_version,torch_version,device
+mlp_demo_baseline,50,10,8,0.013871999981347471,0.013800003216601908,0.014800003555137664,576701.2695182336,3.14.6,2.14.0+cpu,cpu
+mlp_demo_optimized,50,10,8,0.014043999835848808,0.013900000340072438,0.014999997802078724,569638.2863505272,3.14.6,2.14.0+cpu,cpu

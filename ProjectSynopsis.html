@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Model Compiler & Optimization Engine - Project Synopsis</title>
+<style>
+  @page {
+    size: A4;
+    margin: 14mm 14mm 14mm 14mm;
+    @bottom-right {
+      content: "Page " counter(page);
+      font-size: 8pt;
+      font-family: 'Segoe UI', -apple-system, system-ui, sans-serif;
+      color: #64748b;
+    }
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    line-height: 1.48;
+    font-size: 9pt;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Header Cover / Hero */
+  .hero {
+    background: linear-gradient(135deg, #091a24 0%, #122e3b 55%, #1b4353 100%);
+    color: #ffffff;
+    padding: 20px 24px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    border-left: 5px solid #e28743;
+  }
+
+  .hero-tagline {
+    font-size: 7.8pt;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: #7dd3fc;
+    margin-bottom: 4px;
+  }
+
+  .hero-title {
+    font-size: 20pt;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.4px;
+    color: #ffffff;
+  }
+
+  .hero-desc {
+    font-size: 9.8pt;
+    color: #cbd5e1;
+    margin: 0 0 12px 0;
+    max-width: 98%;
+    line-height: 1.4;
+  }
+
+  .meta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .meta-badge {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 7.5pt;
+    color: #f1f5f9;
+    font-family: "Cascadia Code", Consolas, monospace;
+  }
+
+  .meta-badge strong {
+    color: #fbb686;
+  }
+
+  /* Headings */
+  h2 {
+    font-size: 11.5pt;
+    color: #0f2c3d;
+    font-weight: 700;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-bottom: 4px;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  h2::before {
+    content: "";
+    display: inline-block;
+    width: 3.5px;
+    height: 12.5pt;
+    background-color: #e28743;
+    border-radius: 2px;
+  }
+
+  h3 {
+    font-size: 9.6pt;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    color: #1e3a5f;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0 0 6px 0;
+  }
+
+  /* Callout boxes */
+  .callout {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-left: 3.5px solid #0284c7;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 8px 0 10px 0;
+    font-size: 8.5pt;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    color: #0369a1;
+    margin-bottom: 3px;
+    font-size: 8.2pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Diagrams */
+  .pipeline-flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 10px 10px;
+    margin: 8px 0 12px 0;
+    gap: 4px;
+  }
+
+  .flow-step {
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    border-radius: 4px;
+    padding: 6px 8px;
+    text-align: center;
+    flex: 1;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  .flow-step.accent {
+    border-color: #e28743;
+    background: #fff9f5;
+  }
+
+  .flow-step .step-num {
+    font-size: 6.8pt;
+    font-weight: 800;
+    color: #e28743;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .flow-step .step-title {
+    font-size: 8pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 1px 0;
+  }
+
+  .flow-step .step-sub {
+    font-size: 6.8pt;
+    color: #64748b;
+    line-height: 1.2;
+  }
+
+  .flow-arrow {
+    font-size: 10pt;
+    font-weight: 900;
+    color: #94a3b8;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 10px 0;
+    font-size: 8.2pt;
+  }
+
+  th {
+    background-color: #0f2c3d;
+    color: #ffffff;
+    text-align: left;
+    padding: 5px 8px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+
+  th:first-child { border-top-left-radius: 4px; }
+  th:last-child { border-top-right-radius: 4px; }
+
+  td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+
+  /* Code & Math Blocks */
+  code {
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 7.8pt;
+    background-color: #f1f5f9;
+    padding: 1px 3px;
+    border-radius: 3px;
+    color: #991b1b;
+  }
+
+  .math-card {
+    background: #fffbf7;
+    border: 1px solid #fed7aa;
+    border-left: 3.5px solid #d97736;
+    border-radius: 4px;
+    padding: 7px 11px;
+    font-size: 8.5pt;
+    margin: 7px 0 9px 0;
+    color: #431407;
+    line-height: 1.45;
+  }
+
+  .math-card .math-line {
+    margin: 2px 0;
+  }
+
+  /* Grid layout for features */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 7px 0;
+  }
+
+  .card {
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 8px 10px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+
+  .card-title {
+    font-weight: 700;
+    font-size: 8.6pt;
+    color: #0f2c3d;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .card-title::before {
+    content: "■";
+    font-size: 7.5pt;
+    color: #e28743;
+  }
+
+  .card-body {
+    font-size: 8pt;
+    color: #475569;
+    line-height: 1.38;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid;
+  }
+
+  ul, ol {
+    margin: 3px 0 6px 16px;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 2px;
+  }
+
+  .footer-note {
+    font-size: 7.5pt;
+    color: #64748b;
+    text-align: right;
+    margin-top: 14px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================= PAGE 1 ================================= -->
+<div class="hero">
+  <div class="hero-tagline">Architectural Specification & Technical Synopsis</div>
+  <h1 class="hero-title">AI Model Compiler & Optimization Engine</h1>
+  <p class="hero-desc">
+    A research-oriented deep learning compiler engineered to ingest PyTorch models into a custom, project-owned Intermediate Representation (IR), enforce graph-wide structural invariants, apply algebraic and topological optimization passes, perform precision reduction, and verify numerical equivalence against transparent reference execution.
+  </p>
+  <div class="meta-grid">
+    <span class="meta-badge"><strong>Package:</strong> ai-model-compiler v0.1.0</span>
+    <span class="meta-badge"><strong>Runtime:</strong> Python 3.10+ / PyTorch CPU</span>
+    <span class="meta-badge"><strong>Target:</strong> Inference Graph Optimization</span>
+    <span class="meta-badge"><strong>Graph Model:</strong> Custom Project-Owned DAG IR</span>
+    <span class="meta-badge"><strong>UI:</strong> Tkinter Interactive Workbench</span>
+  </div>
+</div>
+
+<div class="avoid-break">
+  <h2>1. Executive Summary & Core Motivation</h2>
+  <p>
+    Modern deep learning frameworks prioritize developer agility and dynamic training flexibility over execution efficiency. Deploying trained neural networks onto resource-constrained or specialized hardware requires a compilation stage: lowering high-level framework graphs into hardware-efficient intermediate representations, eliminating redundancies, fusing operator sequences, and reducing precision.
+  </p>
+  <p>
+    The <strong>AI Model Compiler & Optimization Engine</strong> is built as an end-to-end prototype that explores the core mechanics of a neural network compiler. Unlike projects that simply wrap runtime engines like ONNX Runtime, TensorRT, or TVM, this engine maintains <strong>complete ownership over its Intermediate Representation (IR)</strong>, graph traversal algorithms, pass manager lifecycle, and transformation passes. PyTorch's <code>torch.fx</code> is used strictly at the ingestion boundary for symbolic extraction, and PyTorch functional kernels serve as a pure reference execution baseline.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">Core Design Principles</div>
+    <ul>
+      <li><strong>IR Independence:</strong> Optimization rules and graph transformations mutate only the project's internal Graph/Node/Tensor IR.</li>
+      <li><strong>Strict Invariant Verification:</strong> The graph structure, producer/consumer links, topological ordering, and acyclic properties are validated after ingestion and after <em>every single compiler pass</em>.</li>
+      <li><strong>Isolated Verification:</strong> Graph transformation logic is isolated from kernel implementation bugs by executing the IR against transparent reference kernels and comparing outputs within strict mathematical tolerances.</li>
+      <li><strong>Empirical Rigor:</strong> Performance claims require repeated timing distributions (mean, median, p95) with warmups and environment metadata, tracking neutral and negative results.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="avoid-break">
+  <h2>2. End-to-End Compiler Pipeline</h2>
+  <p>
+    The compilation lifecycle follows a linear pipeline transitioning through six distinct phases:
+  </p>
+
+  <div class="pipeline-flow">
+    <div class="flow-step">
+      <div class="step-num">Phase 1</div>
+      <div class="step-title">FX Frontend</div>
+      <div class="step-sub">Symbolic trace & ShapeProp</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step accent">
+      <div class="step-num">Phase 2</div>
+      <div class="step-title">Custom IR</div>
+      <div class="step-sub">Graph, Node, Tensor DAG</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-num">Phase 3</div>
+      <div class="step-title">Pass Manager</div>
+      <div class="step-sub">Folding, DNE, Fusion</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-num">Phase 4</div>
+      <div class="step-title">Quantization</div>
+      <div class="step-sub">Weight INT8 / FP16</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-num">Phase 5</div>
+      <div class="step-title">Reference CPU</div>
+      <div class="step-sub">Interpretation & Equivalence</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-num">Phase 6</div>
+      <div class="step-title">Evaluation</div>
+      <div class="step-sub">Benchmark & JSON/CSV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================= PAGE 2 ================================= -->
+<div class="page-break"></div>
+
+<div class="avoid-break">
+  <h2>3. Custom Intermediate Representation (IR) Architecture</h2>
+  <p>
+    Located in <code>compiler/ir/</code>, the custom intermediate representation structures neural network computations as a clean Directed Acyclic Graph (DAG) with explicit dataflow contracts:
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Graph Container (graph.py)</div>
+      <div class="card-body">
+        <ul>
+          <li><strong>Named Registries:</strong> Stores <code>nodes: dict[str, Node]</code> and <code>tensors: dict[str, Tensor]</code>.</li>
+          <li><strong>Boundaries:</strong> Declares ordered <code>inputs: list[str]</code> and <code>outputs: list[str]</code>.</li>
+          <li><strong>Topological Order:</strong> Implements Kahn's algorithm with incoming dependency counters. Detects and reports graph cycles immediately.</li>
+          <li><strong>Live Analysis:</strong> Implements <code>reachable_nodes()</code> via reverse-traversal from outputs.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Node & Tensor Abstractions (node.py, tensor.py)</div>
+      <div class="card-body">
+        <ul>
+          <li><strong>Node:</strong> Represents an atomic operation (e.g. <code>Linear</code>, <code>Conv2d</code>). Holds input IDs, output IDs, attributes, kernel parameters (stride, padding, dilation), and compiler metadata.</li>
+          <li><strong>Tensor:</strong> Value-centric object storing static multidimensional shape (tuple), dtype string, producer node ID, set of consumer node IDs, constant tensor value, and quantization scale.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="border-left-color: #10b981;">
+    <div class="callout-title" style="color: #047857;">Structural Invariants Enforced by Graph.validate()</div>
+    <ol style="margin: 2px 0 2px 16px; padding: 0; font-size: 8.2pt;">
+      <li>Every node input and output ID must exist in the tensor registry.</li>
+      <li>Each computed tensor has exactly one producer; graph inputs and constant weights have <code>producer=None</code>.</li>
+      <li>Producer and consumer relationships are strictly symmetric (<code>node &isin; tensor.consumers &harr; tensor &isin; node.inputs</code>).</li>
+      <li>Declared graph boundaries (inputs and outputs) must exist and be flagged accordingly.</li>
+      <li>The computational graph must remain strictly acyclic.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="avoid-break">
+  <h2>4. PyTorch Frontend & Operator Ingestion</h2>
+  <p>
+    The ingestion subsystem (<code>compiler/frontend/pytorch_importer.py</code>) bridges high-level PyTorch models into the custom IR:
+  </p>
+  <ul>
+    <li><strong>Symbolic Extraction:</strong> Calls <code>torch.fx.symbolic_trace(model.eval())</code> to construct a symbolic execution graph.</li>
+    <li><strong>Shape Propagation:</strong> Leverages PyTorch's <code>ShapeProp</code> pass using example inputs to annotate every intermediate node with output tensor dimensions and data types.</li>
+    <li><strong>Attribute & Parameter Mapping:</strong> Constant weights and biases from PyTorch modules are extracted, detached, converted into standalone constant <code>Tensor</code> objects, and wired as explicit inputs to consumer nodes.</li>
+    <li><strong>Operator Registry:</strong> Supports both module-level and function-level PyTorch representations:</li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">IR Operator</th>
+        <th style="width: 25%;">PyTorch Source</th>
+        <th style="width: 38%;">Captured Parameters / Attributes</th>
+        <th style="width: 17%;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Linear</code></td>
+        <td><code>nn.Linear</code>, <code>F.linear</code></td>
+        <td><code>in_features</code>, <code>out_features</code>, weights, bias</td>
+        <td>Implemented</td>
+      </tr>
+      <tr>
+        <td><code>Conv2d</code></td>
+        <td><code>nn.Conv2d</code></td>
+        <td><code>stride</code>, <code>padding</code>, <code>dilation</code>, <code>groups</code>, weights, bias</td>
+        <td>Implemented</td>
+      </tr>
+      <tr>
+        <td><code>BatchNorm2d</code></td>
+        <td><code>nn.BatchNorm2d</code></td>
+        <td><code>eps</code>, <code>momentum</code>, <code>running_mean</code>, <code>running_var</code>, &gamma;, &beta;</td>
+        <td>Implemented</td>
+      </tr>
+      <tr>
+        <td><code>MaxPool2d</code> / <code>AvgPool2d</code></td>
+        <td><code>nn.MaxPool2d</code>, <code>nn.AvgPool2d</code></td>
+        <td><code>kernel_size</code>, <code>stride</code>, <code>padding</code>, <code>dilation</code>, <code>ceil_mode</code></td>
+        <td>Implemented</td>
+      </tr>
+      <tr>
+        <td><code>Flatten</code></td>
+        <td><code>nn.Flatten</code></td>
+        <td><code>start_dim</code>, <code>end_dim</code></td>
+        <td>Implemented</td>
+      </tr>
+      <tr>
+        <td><code>ReLU</code></td>
+        <td><code>nn.ReLU</code>, <code>torch.relu</code></td>
+        <td>None (elementwise non-linearity)</td>
+        <td>Implemented</td>
+      </tr>
+      <tr>
+        <td><code>Add</code> / <code>Mul</code></td>
+        <td><code>torch.add</code>, <code>torch.mul</code>, <code>+</code>, <code>*</code></td>
+        <td>Broadcastable elementwise operands</td>
+        <td>Implemented</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    <strong>Diagnostic Discipline:</strong> When tracing encounters unsupported modules (e.g. <code>nn.Sigmoid</code>, RNNs, MultiheadAttention) or dynamic control flow, the compiler halts immediately with a clear <code>NotImplementedError("Unsupported module: &lt;Name&gt;")</code> rather than silently producing an incomplete graph.
+  </p>
+</div>
+
+<!-- ================================= PAGE 3 ================================= -->
+<div class="page-break"></div>
+
+<div class="avoid-break">
+  <h2>5. Optimization Engine & Compiler Passes</h2>
+  <p>
+    The optimization engine (<code>compiler/optimizer/</code>) operates through an extensible <code>PassManager</code>. Each pass receives the graph, applies topological rewrites, updates consumer sets, and triggers graph-wide validation.
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Constant Folding (constant_folding.py)</div>
+      <div class="card-body">
+        Identifies operations where all input tensors have static constant values (such as pre-calculated scaling factors or bias offsets). Evaluates the arithmetic at compile time, attaches the resulting values to the output tensor, marks the tensor as constant, discards the parent node, and updates downstream consumer links.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Dead-Node Elimination (dead_node_elimination.py)</div>
+      <div class="card-body">
+        Computes the transitive closure of all nodes contributing to the graph's declared outputs using reverse graph traversal. Any unreachable node (e.g. orphaned intermediate representations or detached branches) is purged from the node registry along with its dangling intermediate outputs.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Redundant Operation Elimination (redundant_ops.py)</div>
+      <div class="card-body">
+        Searches for scalar identity arithmetic: <code>x + 0</code> or <code>x * 1</code>. When unambiguous broadcasting is proven, the pass bypasses the operation by rewiring all downstream consumer nodes directly to the dynamic input operand, removing unnecessary kernel launches and memory traffic.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Conv-BatchNorm-ReLU Fusion (operator_fusion.py)</div>
+      <div class="card-body">
+        Fuses sequential <code>Conv2d &rarr; BatchNorm2d &rarr; ReLU</code> pipelines into a unified <code>FusedConvBatchNormReLU</code> node. By folding the batch normalization parameters directly into the convolution weights and biases, inference execution completely bypasses the separate BN kernel invocation and memory roundtrip.
+      </div>
+    </div>
+  </div>
+
+  <div class="math-card">
+    <div class="math-line"><strong>Conv-BatchNorm Parameter Folding Derivation (Inference Mode):</strong></div>
+    <div class="math-line">Given convolution weight <i>W</i>, bias <i>b</i>, and BatchNorm parameters (&mu;, &sigma;<sup>2</sup>, &gamma;, &beta;, &epsilon;):</div>
+    <div class="math-line">&bull; <b>Scale Factor:</b> &nbsp; <i>s</i> = &gamma; / &radic;(&sigma;<sup>2</sup> + &epsilon;)</div>
+    <div class="math-line">&bull; <b>Fused Convolution Weight:</b> &nbsp; <i>W</i><sub>fused</sub> = <i>W</i> &times; reshape(<i>s</i>, [-1, 1, 1, 1])</div>
+    <div class="math-line">&bull; <b>Fused Convolution Bias:</b> &nbsp; <i>b</i><sub>fused</sub> = (<i>b</i> - &mu;) &times; <i>s</i> + &beta;</div>
+    <div class="math-line" style="font-size: 7.8pt; color: #78350f; margin-top: 4px;">The three individual nodes and intermediate feature maps are eliminated from the IR and replaced by a single compound node pointing to <i>W</i><sub>fused</sub> and <i>b</i><sub>fused</sub>, preserving exact numerical output semantics.</div>
+  </div>
+</div>
+
+<div class="avoid-break">
+  <h2>6. Quantization & Precision Engine</h2>
+  <p>
+    The precision subsystem (<code>compiler/quantization/precision.py</code>) implements low-precision representation techniques to reduce memory footprint and latency:
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Symmetric Weight-Only INT8</div>
+      <div class="card-body">
+        Quantizes floating-point weight tensors of <code>Linear</code>, <code>Conv2d</code>, and fused layers into signed 8-bit integers:
+        <div style="margin: 4px 0; font-family: 'Cambria Math', serif;">
+          <i>scale</i> = max(|<i>W</i>|) / 127.0<br>
+          <i>W</i><sub>int8</sub> = clamp(&lfloor; <i>W</i> / <i>scale</i> &rceil;, -127, 127)
+        </div>
+        Stores the resulting <code>int8</code> tensor along with its float32 dequantization scale on the custom <code>Tensor</code> object.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Activation Calibration & Range Estimation</div>
+      <div class="card-body">
+        Feeds representative input batches through the reference runtime with <code>return_intermediates=True</code>. Observes the empirical dynamic range [min(<i>A</i>), max(<i>A</i>)] for every intermediate activation tensor to compute symmetric calibration scale factors:
+        <div style="margin: 4px 0; font-family: 'Cambria Math', serif;">
+          <i>scale</i><sub>act</sub> = max(|min|, |max|) / 127.0
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 6px;">
+    <div class="card-title">Numerical Error Quantification (numerical_error)</div>
+    <div class="card-body">
+      Ensures that optimization and quantization passes do not corrupt computational accuracy by computing absolute and relative discrepancies against the original PyTorch model:
+      <ul>
+        <li><strong>Maximum Absolute Error:</strong> max |<i>Y</i><sub>candidate</sub> - <i>Y</i><sub>reference</sub>|</li>
+        <li><strong>Mean Absolute Error (MAE):</strong> (1 / <i>N</i>) &sum; |<i>Y</i><sub>candidate</sub> - <i>Y</i><sub>reference</sub>|</li>
+        <li><strong>Maximum Relative Error:</strong> max [ |<i>Y</i><sub>candidate</sub> - <i>Y</i><sub>reference</sub>| / max(|<i>Y</i><sub>reference</sub>|, &epsilon;) ]</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ================================= PAGE 4 ================================= -->
+<div class="page-break"></div>
+
+<div class="avoid-break">
+  <h2>7. Backend Execution & Empirical Benchmarking</h2>
+  
+  <h3>Reference CPU Backend (compiler/backend/reference.py)</h3>
+  <p>
+    The reference execution backend is an interpreter that iterates through the graph in topological order. For each node, it resolves input tensor values (unpacking dynamically supplied model inputs, constant parameters, and applying on-the-fly dequantization <i>W</i><sub>fp32</sub> = <i>W</i><sub>int8</sub> &times; <i>scale</i>), dispatches to the corresponding PyTorch functional kernel, and maps the output back to the value registry. This decouples compiler validation from low-level C++/assembly kernel development.
+  </p>
+
+  <h3>Repeatable Latency & Throughput Runner (benchmarks/runner.py)</h3>
+  <p>
+    The benchmarking harness strictly isolates warmup effects from measurement runs:
+  </p>
+  <ul>
+    <li><strong>Configurable Warmup:</strong> Runs <i>N</i> unmeasured warmup iterations to prime instruction and CPU caches.</li>
+    <li><strong>Distributional Metrics:</strong> Executes <i>M</i> timed iterations using <code>time.perf_counter()</code>, calculating mean latency, median latency, and 95th-percentile (p95) latency in milliseconds.</li>
+    <li><strong>Throughput Calculation:</strong> Reports processed samples per second (BatchSize / (MeanLatency / 1000)).</li>
+    <li><strong>Reproducibility Metadata:</strong> Captures OS platform, Python version, PyTorch version, batch size, and execution hardware.</li>
+    <li><strong>Persistence:</strong> Exports structured results to both JSON and CSV files (<code>results/ablation.csv</code>).</li>
+  </ul>
+</div>
+
+<div class="avoid-break">
+  <h2>8. Interactive Desktop Workbench (GUI)</h2>
+  <p>
+    In addition to the programmatic and CLI interfaces, the project includes an interactive Windows-compatible desktop workbench (<code>compiler/gui.py</code>) implemented in Tkinter:
+  </p>
+  <ul>
+    <li><strong>Workload Selection:</strong> Quickly toggle between predefined models (e.g. multi-layer perceptron <code>MLP demo</code>, convolutional network <code>CNN demo</code>).</li>
+    <li><strong>Precision Control:</strong> Select between FP32, FP16, and INT8 precision modes.</li>
+    <li><strong>Interactive Pass Configuration:</strong> Checkboxes allow users to selectively enable or disable individual optimization passes (Constant folding, Dead-node elimination, Redundant op removal, Conv-BN-ReLU fusion) to observe isolated effects.</li>
+    <li><strong>Live Telemetry:</strong> Renders compilation status, pass transformation statistics, reference vs compiled numerical error, and latency distributions directly in the UI console.</li>
+    <li><strong>IR Export:</strong> One-click JSON export of the compiled custom IR graph for visualization and archiving.</li>
+  </ul>
+</div>
+
+<div class="avoid-break">
+  <h2>9. Repository Layout & Verification Matrix</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Directory / File</th>
+        <th style="width: 50%;">Core Responsibility</th>
+        <th style="width: 25%;">Key Outputs / Tests</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>compiler/frontend/</code></td>
+        <td>PyTorch FX symbolic graph tracing, shape propagation, operator registry</td>
+        <td><code>pytorch_importer.py</code></td>
+      </tr>
+      <tr>
+        <td><code>compiler/ir/</code></td>
+        <td>Graph, Node, Tensor data structures, validation rules, JSON serialization</td>
+        <td><code>graph.py</code>, <code>validation.py</code></td>
+      </tr>
+      <tr>
+        <td><code>compiler/optimizer/</code></td>
+        <td>PassManager orchestration; constant folding; DNE; redundant ops; fusion</td>
+        <td>4 optimization passes</td>
+      </tr>
+      <tr>
+        <td><code>compiler/quantization/</code></td>
+        <td>Symmetric INT8 weight quantization, activation calibration, numerical error</td>
+        <td><code>precision.py</code></td>
+      </tr>
+      <tr>
+        <td><code>compiler/backend/</code></td>
+        <td>Topological graph interpreter using reference PyTorch kernels</td>
+        <td><code>reference.py</code></td>
+      </tr>
+      <tr>
+        <td><code>compiler/gui.py</code></td>
+        <td>Interactive desktop compilation workbench with live controls</td>
+        <td>Tkinter UI</td>
+      </tr>
+      <tr>
+        <td><code>benchmarks/</code></td>
+        <td>Latency/throughput runner, torchvision evaluation harness, CSV/JSON persistence</td>
+        <td><code>runner.py</code>, <code>workloads.py</code></td>
+      </tr>
+      <tr>
+        <td><code>visualization/</code></td>
+        <td>Graphviz DOT generator (no Graphviz runtime dependency), Matplotlib plotter</td>
+        <td><code>dot.py</code>, <code>benchmarks.py</code></td>
+      </tr>
+      <tr>
+        <td><code>tests/</code></td>
+        <td>Automated unit and integration test suite across the complete pipeline</td>
+        <td>6 test suites (passing)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ================================= PAGE 5 ================================= -->
+<div class="page-break"></div>
+
+<div class="avoid-break">
+  <h2>10. Automated Test Suite Coverage</h2>
+  <ul>
+    <li><code>tests/test_vertical_slice.py</code>: Validates end-to-end MLP import, reference execution equivalence, and unsupported module diagnostics.</li>
+    <li><code>tests/test_optimizations.py</code>: Verifies constant folding of Add/Mul, dead-node elimination of unreachable subgraphs, and redundant scalar zero/one elimination.</li>
+    <li><code>tests/test_fusion_and_precision.py</code>: Tests Conv-BN-ReLU fusion numerical close-match, FP16 downcasting, INT8 weight quantization tolerances, and activation range calibration.</li>
+    <li><code>tests/test_gui_pipeline.py</code>: Asserts that programmatic calls from the GUI workbench produce valid, finite, and numerically accurate compiled outputs.</li>
+    <li><code>tests/test_persistence.py</code>: Checks JSON serialization round-tripping and CSV benchmark record parsing.</li>
+    <li><code>tests/test_tools.py</code>: Tests DOT visualization string generation and workload evaluation reporting.</li>
+  </ul>
+</div>
+
+<div class="avoid-break">
+  <h2>11. Limitations & Planned Research Roadmap</h2>
+  <p>
+    As documented in <code>docs/PROJECT_BLUEPRINT.md</code>, the current implementation is a robust vertical slice with specific planned extensions:
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Current Scope Boundaries</div>
+      <div class="card-body">
+        <ul>
+          <li><strong>Inference Only:</strong> Training semantics, backwards autograd graphs, and optimizer states are intentionally unsupported.</li>
+          <li><strong>Static Graphs:</strong> Dynamic shapes, data-dependent control flow (if-conditions, while-loops), and non-tensor FX targets are rejected.</li>
+          <li><strong>CPU Reference Execution:</strong> Kernel execution is mediated by PyTorch functional operations rather than a custom LLVM/C++ backend.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Next Development Milestones</div>
+      <div class="card-body">
+        <ul>
+          <li><strong>Workload Expansion:</strong> Expand operator coverage to support full, unmodified ResNet-18 and MobileNet-v3 graphs (residual skip additions, global pooling).</li>
+          <li><strong>Comparative Benchmarks:</strong> Add ONNX Runtime export and baseline comparison to evaluate custom IR performance against industry runtimes.</li>
+          <li><strong>Native CPU Lowering:</strong> Implement a lightweight C/NumPy lowering path to eliminate the PyTorch execution dependency entirely.</li>
+          <li><strong>Dataset Accuracy Study:</strong> Measure real-world accuracy degradation across CIFAR-10 / ImageNet for fused and quantized models.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="border-left-color: #6366f1; margin-top: 14px;">
+    <div class="callout-title" style="color: #4f46e5;">Conclusion & Research Significance</div>
+    The project provides a clean, mathematically verified, and modular prototype of an AI compiler. By maintaining strict IR invariants, formal pass verification, transparent reference execution, and automated ablation persistence, it establishes a solid architectural foundation for deep learning compiler research and optimization experimentation.
+  </div>
+
+  <div class="footer-note">
+    Document: <code>ProjectSynopsis.pdf</code> &bull; AI Model Compiler & Optimization Engine &bull; Generated: October 2026
+  </div>
+</div>
+
+</body>
+</html>
+
